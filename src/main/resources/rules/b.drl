@@ -1,0 +1,26 @@
+package com.risk.management;
+
+import com.trusfort.risk.base.obj.AuditObject
+import com.trusfort.risk.base.obj.AuditResult
+import com.trusfort.risk.base.obj.Policy
+import com.trusfort.risk.base.obj.ControlPolicy
+import com.trusfort.risk.base.obj.Risk
+import java.util.*
+
+rule "cc374134394d4e21b2893749923bd9b9: R000000033是否在模拟器上运行"
+dialect 'mvel'
+salience 10
+when
+    AuditObject(
+        this["channelCode"] in ("ECP"),
+        this["businessTypeCode"] in ("ECP"),
+        $uuid: this["uuid"])
+then
+Risk risk = new Risk($uuid,1,"R000000033是否在模拟器上运行","ECP规则集");
+HashSet riskLabelSet = new HashSet();
+riskLabelSet.add("ECP");
+risk.setRiskLabelSet(riskLabelSet);
+risk.setControlPolicy(new ControlPolicy("block","阻断",1));
+risk.setRiskLevel(3);
+insert(risk);
+end
