@@ -15,6 +15,7 @@ class DroolsDemoApplicationTests {
     private KieSession statefulKieSession = null;
     @Test
     void contextLoads() {
+        System.setProperty("drools.dialect.mvel.strict","false");
         KieServices kieServices = KieServices.Factory.get();
         container = kieServices.getKieClasspathContainer();
         statefulKieSession = container.newKieSession("all-rules");
